@@ -20,8 +20,8 @@ public class LightController : MonoBehaviour
     public Transform[] spotPoses;
     public float[] directionAngles;
 
-    public int LightIndex{ get; set; }
-    
+    public int LightIndex { get; set; }
+
     void Awake()
     {
         Instance = this;
@@ -33,9 +33,9 @@ public class LightController : MonoBehaviour
         for (int i = 0; i < lights.Length; i++)
         {
             lights[i].light.gameObject.SetActive(i == index);
-        }    
+        }
     }
-    
+
     public void ChangeLightPos(int index)
     {
         switch (lights[LightIndex].light.type)
@@ -60,14 +60,19 @@ public class LightController : MonoBehaviour
                 throw new ArgumentOutOfRangeException();
         }
     }
-    
+
+    public void ChangeLightPower(float power)
+    {
+        lights[LightIndex].light.intensity = power;
+    }
+
     public void ChangeShadowStrength(float strength)
     {
         lights[LightIndex].light.shadowStrength = strength;
     }
-    
-    public void ChangeShadowOn(bool isOn)
-    {
-        lights[LightIndex].light.shadows = isOn ? LightShadows.Soft : LightShadows.None;
-    }
+
+    // public void ChangeShadowOn(bool isOn)
+    // {
+    //     lights[LightIndex].light.shadows = isOn ? LightShadows.Soft : LightShadows.None;
+    // }
 }

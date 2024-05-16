@@ -17,13 +17,17 @@ public class Model
 public class ModelController : MonoBehaviour
 {
     public static ModelController Instance;
+    public MeshRenderer[] shadowRenders;
 
     public Model[] models;
     public int ModelIndex;
 
+    private MaterialPropertyBlock propertyBlock;
+    
     private void Awake()
     {
         Instance = this;
+        propertyBlock = new MaterialPropertyBlock();
     }
 
     public void ChangeMat(int index)
@@ -84,5 +88,39 @@ public class ModelController : MonoBehaviour
         }
 
         UIController.Instance.RefreshModel(models[ModelIndex]);
+    }
+
+    public void ChangeShadowOn(bool on)
+    {
+        foreach (var shadow in shadowRenders)
+        {
+            shadow.gameObject.SetActive(on);
+        }
+    }
+
+    public void ChangeShadowStrength(float strength)
+    {
+        var alpha = strength;
+        
+        for (int i = 0; i < shadowRenders.Length; i++)
+        {
+            var _renderer= shadowRenders[i];
+            _renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_Shadow_Color", new Color(0, 0, 0, alpha));
+            _renderer.SetPropertyBlock(propertyBlock);
+        }
+    }
+
+    int[] shadowAngle = { 0, 270, 90, 180 };
+
+    public void ChangeShadowDirection(int angelIndex)
+    {
+        for (int i = 0; i < shadowRenders.Length; i++)
+        {
+            var _renderer= shadowRenders[i];
+            _renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetFloat("_Shadow_Rotated", shadowAngle[angelIndex]);
+            _renderer.SetPropertyBlock(propertyBlock);
+        }
     }
 }

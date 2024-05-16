@@ -8,17 +8,14 @@ public class UIController : MonoBehaviour
     public static UIController Instance;
 
     public Slider lightTypeSlider;
-
     public Slider LightPosSlider;
+    public Slider LightPowerSlider;
 
     public Slider ShadowOnSlider;
-
     public Slider ShadowStrengthSlider;
 
     public Slider MaterialSlider;
-
     public Slider MatMetallicSlider;
-
     public Slider MatTransparentSlider;
 
     public Slider ModelSlider;
@@ -28,6 +25,7 @@ public class UIController : MonoBehaviour
         Instance = this;
         lightTypeSlider.onValueChanged.AddListener(OnLightTypeChange);
         LightPosSlider.onValueChanged.AddListener(OnLightPosChange);
+        LightPowerSlider.onValueChanged.AddListener(OnLightPowerChange);
         ShadowOnSlider.onValueChanged.AddListener(OnShadowOnChange);
         ShadowStrengthSlider.onValueChanged.AddListener(OnShadowStrengthChange);
         MaterialSlider.onValueChanged.AddListener(OnMaterialChange);
@@ -51,19 +49,25 @@ public class UIController : MonoBehaviour
     private void OnLightPosChange(float arg0)
     {
         LightController.Instance.ChangeLightPos((int)arg0);
+        ModelController.Instance.ChangeShadowDirection((int)arg0);
+    }
+
+    private void OnLightPowerChange(float arg0)
+    {
+        LightController.Instance.ChangeLightPower((int)arg0);
     }
 
     float[] strength = { 0.2f, 0.4f, 0.6f, 0.8f, 1 };
     private void OnShadowOnChange(float arg0)
     {
         var index = (int)arg0;
-        LightController.Instance.ChangeShadowOn(index == 0);
+        ModelController.Instance.ChangeShadowOn(index == 0);
     }
 
     private void OnShadowStrengthChange(float arg0)
     {
         var index = (int)arg0;
-        LightController.Instance.ChangeShadowStrength(strength[index]);
+        ModelController.Instance.ChangeShadowStrength(strength[index]);
     }
 
 
